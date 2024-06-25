@@ -9,6 +9,13 @@
 :root{
     --light-blue: #CFE8FF;
     --blue:rgb(228, 228, 233);
+    --primary-color: #669ccb;
+    --primary-color-dark: #5681a7;
+    --secondary-color: #e8f1fa;
+    --text-dark: #282d31;
+    --text-light: #767268;
+    --extra-light: #f3f4f6;
+     --max-width: 1200px;
 }
 
 .container{
@@ -133,6 +140,8 @@
     font-size: 20px;
     padding: 10px;
 }
+
+
 
 
 

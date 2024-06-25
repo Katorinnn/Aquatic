@@ -1,13 +1,19 @@
 
 <?php 
-$conn = mysqli_connect("localhost","root","","rooms");
-$sql = mysqli_query($conn,"SELECT * FROM tbl_verify");
+$dbhost = 'localhost:3306';
+$dbuser = 'root';
+$dbpass = '';
+$db     = 'user_db';
+
+// Establish connection
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $db);
+$sql = mysqli_query($conn,"SELECT * FROM tbl_datepicker");
 
 if (isset($_GET["id"]) && isset($_GET["Status"])){
     $id = $_GET["id"];  
     $status = $_GET["Status"];
-    mysqli_query($conn,"UPDATE tbl_verify SET Status ='$status' WHERE id = '$id'");
-    header("location:bookingstaff.php");
+    mysqli_query($conn,"UPDATE tbl_datepicker SET Status ='$status' WHERE id = '$id'");
+    header("location:bookingstaff");
     die();
 }
 ?>
@@ -35,19 +41,19 @@ if (isset($_GET["id"]) && isset($_GET["Status"])){
 		</a>
 		<ul class="side-menu top">
 			<li >
-            <a href="user.php">
+            <a href="user">
 					<i class='bx bxs-doughnut-chart' ></i>
 					<span class="text">Dashboard</span>
 				</a>
 			</li>
 			<li class="active">
-                <a href="<?=('bookings.php') ?>" class="sidebar-menu top">
+                <a href="<?=('bookings') ?>" class="sidebar-menu top">
 					<i class='bx bxs-group' ></i>
-					<span class="text">Bookings</span>`1	a
+					<span class="text">Bookings</span>
 				</a>
                 </li>
 			<li>
-                <a href="<?= ('loginform.php') ?>" class="sidebar-menu top">
+                <a href="<?= ('loginform_view') ?>" class="sidebar-menu top">
 					<i class='bx bxs-log-out-circle' ></i>
 					<span class="text">Logout</span>
 				</a>
@@ -63,14 +69,8 @@ if (isset($_GET["id"]) && isset($_GET["Status"])){
 		<nav>
 			<i class='bx bx-menu' ></i>
 			<a href="#" class="nav-link"></a>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-				</div>
-			</form>
-			<input type="checkbox" id="switch-mode" hidden>
-			<label for="switch-mode" class="switch-mode"></label>
+				<input type="checkbox" id="switch-mode" hidden>
+				<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="notification">
 				<i class='bx bxs-bell' ></i>
 				<span class="num">8</span>
@@ -99,23 +99,33 @@ if (isset($_GET["id"]) && isset($_GET["Status"])){
 			</div>
 
 
-	<div class="table-data">
-				<div class="order">
-					<div class="head">
-						<h3>Booking History</h3>
-						<i class='bx bx-search' ></i>
-						<i class='bx bx-filter' ></i>
-					</div>
+	<section>
+				<div class="table-data">
+					<div class="order">
+						<div class="head">
+							<h3>Booking History</h3>
+					<form action="#" onsubmit="return false;">
+        				<div class="form-input">
+            				<input type="search" id="searchInput" placeholder="Search..." oninput="searchTable()">
+        				</div>
+    				</form>
+					<i class='bx bx-filter' ></i>
+					</div>		
+					<div id ="horizontal-line"></div>
+					
 					<div class="containers">
-    <table border="1">
+				<table class="table" id="dataTable">
+			<tr>
         <tr>
         <td style="display:none">#</td>
         <th>Guest Name</th>
-	    <th>Date</th>
-        <th>Room No.</th>
-        <th>Cottage No.</th>
-        <th>Contact No.</th>
-        <th>Status</th>
+            <th>Check in</th>
+	        <th>Check out</th>
+            <th>Room No.</th>
+            <th>Cottage No.</th>
+		    <th>Email</th>
+            <th>Contact_No.</th>
+            <th>Status</th>
         <th>Action</th>
         <?php 
         $i = 1;
@@ -123,10 +133,12 @@ if (isset($_GET["id"]) && isset($_GET["Status"])){
             while($row = mysqli_fetch_assoc($sql)) {?>
             <tr>
             <td style="display:none">#</td>
-			<td><?php echo $row["GUEST_NAME"]?></td>
-			<td><?php echo $row["DATE"]?></td>
+			<td><?php echo $row["guest_name"]?></td>
+			<td><?php echo $row["check_in"]?></td>
+			<td><?php echo $row["check_out"]?></td>
 			<td><?php echo $row["Room_no."]?></td>
             <td><?php echo $row["Cottage_no."]?></td>
+			<td><?php echo $row["email"]?></td>
             <td><?php echo $row["Contact_no."]?></td>
             <td>
                 <?php 
@@ -158,7 +170,7 @@ if (isset($_GET["id"]) && isset($_GET["Status"])){
     </div>
 <script type="text/javascript">
 function status_update(value,id){
-    let url = "http://localhost:8000/bookingstaff.php";
+    let url = "http://localhost:8080/bookingstaff";
     window.location.href= url+ "?id="+id+"&Status="+value;
 }
 

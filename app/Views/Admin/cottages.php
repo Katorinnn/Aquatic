@@ -1,19 +1,4 @@
 <?php require 'fumction.php' ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<!-- Boxicons -->
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<!-- My CSS -->
-	<link rel="stylesheet" href="dashboard.css">
-
-	<title>Aquatic Resort</title>
-</head>
-<body>
-
 
 	<!-- SIDEBAR -->
 	<section id="sidebar">
@@ -47,7 +32,7 @@
 				</a>
 			</li>
 			<li>
-                <a href="<?= ('loginform') ?>" class="sidebar-menu top">
+                <a href="<?= ('loginform_view') ?>" class="sidebar-menu top">
 					<i class='bx bxs-log-out-circle' ></i>
 					<span class="text">Logout</span>
 				</a>
@@ -63,12 +48,6 @@
 		<nav>
 			<i class='bx bx-menu' ></i>
 			<a href="#" class="nav-link"></a>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-				</div>
-			</form>
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="notification">
@@ -102,50 +81,137 @@
 				<div class="order">
 					<div class="head">
 						<h3>COTTAGES LIST</h3>
-						<a href= "<?=('no')?> "class="btn">ADD COTTAGES</a>
+					<form action="#" onsubmit="return false;">
+        				<div class="form-input">
+            				<input type="search" id="searchInput" placeholder="Search..." oninput="searchTable()">
+        				</div>
+    				</form>
+						<i class=""><button id="addCottagesBtn" class="btn">+</button></i>	
 					</div>
 				<div id ="horizontal-line"></div>
-
-					<!-- border = 1 cellpadding = 10 cellspacing = 0 -->
-			<div class="containers">	
-        <table class="table">
-			<thead>
-				<tr>
-					<th>Cottage No.</th>
-					<th>Capacity</th>
-					<th>Description</th>
-					<th>Image</th>
-					<th>Action</th>
+			<div id="addCottagesModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+			<div class = "form-container">
+				<form class="" action="" method="post" enctype="multipart/form-data">
+				Cottage #
+				<input type="text" name="COTTAGENUM"required> <br>
+				Capacity
+				<input type="text" name="CAPACITY" required> <br>
+				Description
+				<input type="text" name="DESCRIPTION" required> <br>
+				Image
+				
+				<section class="btns">
+				<input type="file" name="file" required > <br>
+				<br>
+				<br>
+				<button	type="submit" name="submit" value="add">ADD</button>
+			</section>
+			</form>
+		</div>
+	</div>
+</div>
+	<div id ="horizontal-line"></div>
+		<div class="containers">	
+			<table class="table">
+				<thead>
+				<div class="containers">	
+			<tr>
+				<td>COTTAGENUM</td>
+				<td>CAPACITY</td>
+				<td>DESCRIPTION</td>
+				<td>IMAGE</td>
+				<td>ACTION</td>
+			</tr>
+				<div id="editModal" class="modal">
+					<div class="modal-content">
+						<span class="close" onclick="closeModal()">&times;</span>
+						<h2>Edit Cottage</h2>
+						<form id="editForm" enctype="multipart/form-data">
+							<input type="hidden" id="editItemId" name="editItemId" value="">
+							<div class="form-group">
+								<label for="editCottageNo">Cottage Number</label>
+								<input type="text" id="editCottageNo" name="editCottageNo">
+							</div>
+							<div class="form-group">
+								<label for="editCapacity">Capacity:</label>
+								<input type="text" id="editCapacity" name="editCapacity">
+							</div>
+							<div class="form-group">
+								<label for="editDescription">Description:</label>
+								<textarea id="editDescription" name="editDescription"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="editImage">Upload Image:</label>
+								<input type="file" id="editImage" name="editImage">
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-primary">Save Changes</button>
+							</div>
+						</form>
+					</div>
+				</div>
 				</tr>
 			</thead>
 		<?php 
-			$rooms = mysqli_query($conn, "SELECT * FROM tbl_cottage");
-			$i = 1;
-			
-			foreach($rooms as $user):
+		$dbhost = 'localhost:3306';
+		$dbuser = 'root';
+		$dbpass = '';
+		$db     = 'user_db';
+		
+		
+		$conn  = mysqli_connect($dbhost,$dbuser,'',$db);
+		$rooms = mysqli_query($conn, "SELECT * FROM tbl_cottage");
+		$i = 1;
+		foreach($rooms as $user):
 			?>
-				<tr>
-				<td style="display:none">#</td>
-					<td><?php echo $user["COTTAGENUM"]?></td>
-					<td><?php echo $user["CAPACITY"]?></td>
-					<td><?php echo $user["DESCRIPTION"]?></td>
-					<td> <img src = "website/<?php echo $user["IMAGE"]; ?>"width="100"></td>
-					<td>
-						<a href="editcott.php?id=<?php echo $user['id']; ?>"><button>EDIT</button></a>
-						<form class = "" action="" method = "post">
-						<button type = "submit" name = "submit" value = <?php echo $user['id']; ?>> DELETE</button>
-						</form>
-				</tr>
+			<tr>
+			<td style="display:none">#</td>
+				<td><?php echo $user["COTTAGENUM"]?></td>
+				<td><?php echo $user["CAPACITY"]?></td>
+				<td><?php echo $user["DESCRIPTION"]?></td>
+				<td> <img src = "C:\Users\Acer\Documents\Aquatic-Resort BBBBBBBBBUP\public\uploads<?php echo $user["IMAGE"]; ?>"width="100"></td>
+				<td>
+					<a href="editcott.php?id=<?php echo $user['id']; ?>"><button>EDIT</button></a>
+					<form class = "" action="" method = "post">
+					<button type = "submit" name = "submit" value = <?php echo $user['id']; ?>> DELETE</button>
+					</form>
+			</tr>
 			<?php endforeach; ?>
-		</table>
-	</div>
-</div>
-</div>	
 	
-	</section>
+		  </table>
+		</div>
+		</div>
+		</div>	
+		
+		</section>
 	<!-- CONTENT -->
 	
 
 	<script src="script.js"></script>
+	<script>
+		var modal = document.getElementById("addCottagesModal");
+
+// Get the button that opens the modal
+var addCottagesBtn = document.getElementById("addCottagesBtn");
+
+// When the user clicks the button, open the modal
+addCottagesBtn.onclick = function() {
+	modal.style.display = "block";
+}
+
+// Function to close the modal
+function closeModal() {
+	modal.style.display = "none";
+}
+
+// Close the modal if the user clicks outside of it
+window.onclick = function(event) {
+	if (event.target == modal) {
+		modal.style.display = "none";
+	}
+}
+	</script>
 </body>
 </html>

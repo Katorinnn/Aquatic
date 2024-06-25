@@ -7,9 +7,13 @@ use CodeIgniter\Controller;
 
 class Home extends BaseController
 {
-    public function loginform(): string
+    public function Home(): string
     {
-        return view('Home/loginform');
+        return view('header').('Home/index');
+    }
+    public function loginform_view(): string
+    {
+        return view('Home/loginform_view');
     }
     public function user(): string
     {

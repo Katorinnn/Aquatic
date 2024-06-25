@@ -40,7 +40,7 @@ if(isset($_POST['submit'])){
     <title>Admin page</title>
     <link rel="stylesheet" href="style.css">
    </head>
-
+<body>
     <div class = "form-container">
         <img src="logo.png" class = "imglogo">
         <form action="" method="post">

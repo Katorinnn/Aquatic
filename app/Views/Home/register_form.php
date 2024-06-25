@@ -60,10 +60,14 @@ if(isset($_POST['submit'])){
             <option value="user">staff</option>
             <option value="admin">admin</option>
         </select>
-        <input type="submit" name="submit" value="register now" class="form-btn">
+        <input type="submit" name="submit" value="register now" class="form-btn" onclick="redirectToLoginForm(); return false;">
         <p>already have an account? <a href= "<?=('loginform')?> ">Login Now</a></p>
         </form>
     </div>
-    
+    <script>
+        function redirectToLoginForm() {
+            window.location.href = 'loginform_view';
+        }
+    </script>
 </body>
 </html>

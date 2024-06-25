@@ -4,10 +4,26 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	
 }
 html{
 	scroll-behavior: smooth;
+	overflow-x: hidden;
+	animation: normal;
 }
+/* section{
+	animation: none;
+}
+@keyframes transitionIn{
+	from{
+		opacity: 0;
+		transform: rotateX('-10deg');
+	}
+	to{
+		opacity: 0;
+		transform: rotateX('0');
+	}
+} */
 a {
 	text-decoration: none;
 }
@@ -30,12 +46,11 @@ li {
 	--light-yellow: #FFF2C6;
 	--orange: #FD7238;
 	--light-orange: #FFE0D3;
+	--bg-color:#F3F7EC;
+	
 
 }
 
-html {
-	overflow-x: hidden;
-}
 /* switch theme color */
 body.dark {
 	--light: #0C0C1E;
@@ -54,6 +69,14 @@ body {
 	justify-content: center;
 	align-items: center;
 	margin-left: 30px;
+}
+.side-menu {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+}
+
+.side-menu.hidden {
+    opacity: 0;
 }
 #sidebar {
 	position: fixed;
@@ -194,36 +217,6 @@ body {
 	width: 100%;
 	margin-left: auto;
 }
-#content nav form .form-input {
-	display: flex;
-	align-items: right;
-	height: 36px;
-
-}
-#content nav .form-input input {
-	flex-grow: 1;
-	padding: 0 16px;
-	height: 100%;
-	border: none;
-	background: var(--grey);
-	border-radius: 36px 0 0 36px;
-	outline: none;
-	width: 100%;
-	color: var(--dark);
-}
-#content nav form .form-input button {
-	width: 36px;
-	background-color: var(--blue);
-	height: 100%;
-	display: flex;
-	align-items: right;
-	color: var(--light);
-	font-size: 18px;
-	border: none;
-	outline: none;
-	border-radius: 0 36px 36px 0;
-	cursor: pointer;
-}
 
 #content nav {
 	height: 56px;
@@ -258,6 +251,7 @@ body {
 #content nav .nav-link {
 	font-size: 16px;
 	transition: .3s ease;
+	width: 100%;
 }
 #content nav .nav-link:hover {
 	color: var(--blue);
@@ -314,7 +308,10 @@ body {
 }
 /* NAVBAR */
 
-
+.bx-search:before{
+	margin-top: 10px;
+	color: black;
+}
 
 /* MAIN */
 #content main {
@@ -396,6 +393,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
 }
 /* #content main .box-info li:nth-child(1) .bx {
 	background: var(--light-blue);
@@ -443,6 +441,7 @@ body {
 	font-weight: 600;
 	position: sticky;
 }
+
 #content main .table-data .head .bx {
 	cursor: pointer;
 }
@@ -482,24 +481,6 @@ body {
 }
 
 
-/* #content main .table-data .order table tr td .status {
-	font-size: 10px;
-	padding: 6px 16px;
-	color: var(--light);
-	border-radius: 20px;
-	font-weight: 700;
-}
-#content main .table-data .order table tr td .status.completed {
-	background: var(--blue);
-}
-#content main .table-data .order table tr td .status.process {
-	background: var(--yellow);
-}
-#content main .table-data .order table tr td .status.pending {
-	background: var(--orange);
-} */
-
-
 /* MAIN */
 
 /* CONTENT */
@@ -533,6 +514,15 @@ table{
 	min-width: 165vh;
 	overflow-y: hidden;
 	max-height: fit-content;
+	position: sticky;
+	margin-left: 25px;
+}
+input[type="search"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
 }
 
 table thead tr{
@@ -542,21 +532,26 @@ table thead tr{
 	font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	
 }
-.table th
-.table td{
-	padding: 12px 15px;
+.table th, .table td {
+	padding: 8px;
+	text-align: left;
+	border-bottom: 1px solid #ddd; /* Add horizontal line between rows */
+	font-size: 18px;
+	
 }
 
-/* LOADER IN LOGGING OUT */
+
+/*  */
 .container {
     text-align: center;
     margin-top: 100px;
 }
 
+/* Styles for modal */
 .modal {
-    display: none;
+    display: none; /* Hidden by default */
     position: fixed;
-    z-index: 1;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
@@ -569,22 +564,41 @@ table thead tr{
     background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 40%;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    position: relative;
 }
 
 .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+
+.btn {
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: none;
 }
 
 /* search button */
@@ -618,9 +632,98 @@ table thead tr{
 	color: var(--light);
 	font-size: 18px;
 	border: none;
-	outline: none;
-	border-radius: 0 36px 36px 0;
+	outline: none;	
+	border-radius: 0 23px 23px 0;
 	cursor: pointer;
 }
 
+/* Form-container */
+h3{
+	font-size: 20px;
+	text-align: center;
+}
+.form-container{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+	overflow-y: none;
+	margin-left: 30px;
+}
+.form-container form{
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    width: 500px;
+    margin-right: 40px;
+    
+}
+/* .form-container form h3{
+    font-size: 30px;
+    text-transform:uppercase ;
+    margin-bottom: 10px;
+    color: #333;
+} */
+select{
+	background-color: rgb(255, 255, 255);
+	font-size: 15px;
+
+}
+ 
+.form-container form input,
+.form-container form select{
+    width: 100%;
+    padding: 10px 15px ;
+    font-size: 17px;
+    margin: 8px;
+    background:#eee;
+    border-radius: 20px;
+  	margin-top: 15px;
+  	border-inline: 2px solid transparent;
+}
+.form-container form select option{
+    background: #fff;
+}
+.form-container form .form-btn{
+    background: #eee;
+    color:black;
+    text-transform: capitalize;
+    font-size: 20px;
+    cursor: pointer;
+}
+.form-container form .form-btn:hover{
+    background: var(--light-blue);
+    color: #fff;
+}
+.form-container form p a{
+    color: blue;
+}
+.form-container form p a:hover{
+    color: lightblue;
+}
+.form-container form .error-msg{
+    margin: 10px 0;
+    display: block;
+    background:lightblue ;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 10px;
+}
+.btns input{
+	font-size: 20px;
+	background-color: white;
+	padding-left: 60px;
+	
+
+}
+.btns button{
+	text-align: right;
+	justify-content: right;
+	margin-left:410px;
+	font-size: 18px;
+	margin-bottom: 20px;
+	border: none;
+	
+
+}
 	

@@ -9,23 +9,23 @@ class Admin extends BaseController
 { 
     public function index(): string
     {
-        return view('Admin/index');
+        return view('header'). view('Admin/index');
     }
     public function bookings(): string
     {
-        return view('Admin/bookings');
+        return view('header'). view('Admin/bookings');
     }
     public function bookingstaff(): string
     {
-        return view('Admin/bookingstaff');
+        return view('header'). view('Admin/bookingstaff');
     }
     public function cottages(): string
     {
-        return view('Admin/cottages');
+        return view('header'). view('Admin/cottages');
     }
     public function rooms(): string
     {
-        return view('Admin/rooms');
+        return view('header'). view('Admin/rooms');
     }
     public function yes(): string
     {
@@ -42,6 +42,18 @@ class Admin extends BaseController
     public function fumction(): string
     {
         return view('Admin/fumction');
+    }
+    public function loginform_view(): string
+    {
+        return view('Admin/loginform_view');
+    }
+    public function register_form(): string
+    {
+        return view('Admin/register_form');
+    }
+    public function conf(): string
+    {
+        return view('Admin/conf');
     }
 
 }

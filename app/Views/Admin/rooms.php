@@ -1,18 +1,4 @@
 <?php require 'fumction.php' ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<!-- Boxicons -->
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<!-- My CSS -->
-	<link rel="stylesheet" href="dashboard.css">
-
-	<title>Aquatic Resort</title>
-</head>
-<body>
 
 
 	<!-- SIDEBAR -->
@@ -62,13 +48,7 @@
 		<!-- NAVBAR -->
 		<nav>
 			<i class='bx bx-menu' ></i>
-			<a href="#" class="nav-link"></a>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-				</div>
-			</form>
+			<a href="#" class="nav-link"></a>	
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="notification">
@@ -98,55 +78,112 @@
 				</div>
 			</div>
 		<br>
-				<div class="table-data">
-					<div class="order">
-						<div class="head">
-						<h3>ROOMS LIST</h3>
-						<a href= "<?=('no')?> "class="btn">ADD ROOMS</a>
-					</div>
-					<div id ="horizontal-line"></div>
+		<div class="table-data">
+			<div class="order">
+				<div class="head">
+					<h3>ROOMS LIST</h3>
+					<form action="#" onsubmit="return false;">
+        				<div class="form-input">
+            				<input type="search" id="searchInput" placeholder="Search..." oninput="searchTable()">
+        				</div>
+    				</form>
+					<i class=""><button id="addRoomsBtn" class="btn">+</button></i>	
+				</div>
+				<div id ="horizontal-line"></div>
+				<div id="addRoomsModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+            <h3>Add Rooms</h3>
+        <div class = "form-container">
+			<form class="" action="" method="post" enctype="multipart/form-data">
+				Room #
+				<input type="text" name="ROOMNUM"required> <br>
+				Capacity
+				<input type="text" name="CAPACITY" required> <br>
+				Description
+				<input type="text" name="DESCRIPTION" required> <br>
+				Image
+			
+			<section class="btns">
+				<input type="file" name="file" required > <br>
+				<br>
+				<br>
+				<button	type="submit" name="submit" value="add">ADD</button>
+			</section>
+			</form>
+		</div>
+	</div>
+</div>
 				<div class="containers">
             <table class="table">
 				<thead>
-					<tr>
-						<td style="display:none">#</td>
-						<th>Room No.</th>
-						<th>Capacity</th>
-						<th>Description</th>
-						<th>Image</th>
-						<th>Action</th>
-					</tr>
+				<tr>
+                <th>ROOMNUM</th>
+                <th>CAPACITY</th>
+                <th>DESCRIPTION</th>
+                <th>IMAGE</th>
+                <th>ACTION</th>
+            </tr>
 				</thead>
-			<?php 
-		$rooms = mysqli_query($conn, "SELECT * FROM tbl_room");
-		$i = 1;
-		
-		foreach($rooms as $user):
-		?>
-		<tr>
-        <td style="display:none">#</td>
-			<td><?php echo $user["ROOMNUM"]?></td>
-			<td><?php echo $user["CAPACITY"]?></td>
-			<td><?php echo $user["DESCRIPTION"]?></td>
-			<td> <img src = "website/<?php echo $user["IMAGE"]; ?>"width="100"></td>
-			<td>
-				<a href="edituser.php?id=<?php echo $user['id']; ?>"><button>EDIT</button></a>
-				<form class = "" action="" method = "post">
-				<button type = "submit" name = "submit" value = <?php echo $user['id']; ?>> DELETE</button>
-				</form>
-		</tr>
-		<?php endforeach; ?>
-
-      </table>
+				<?php 
+			$dbhost = 'localhost:3306';
+			$dbuser = 'root';
+			$dbpass = '';
+			$db     = 'user_db';
+			
+			
+			$conn  = mysqli_connect($dbhost,$dbuser,'',$db);
+			$rooms = mysqli_query($conn, "SELECT * FROM tbl_room");
+			$i = 1;
+			
+			foreach ($rooms as $room): ?>
+                <tr>
+				<td style="display:none">#</td>
+                    <td><?= $room['ROOMNUM'] ?></td>
+                    <td><?= $room['CAPACITY'] ?></td>
+                    <td><?= $room['DESCRIPTION'] ?></td>
+                    <td><img src="<?= base_url('uploads/' . $room['IMAGE']) ?>" alt="Room Image" width="100"></td>
+                    <td>
+                        <a href="<?= site_url('room/edit/' . $room['id']) ?>" class="btn btn-success btn-sm">Edit</a>
+                        <a href="<?= site_url('room/delete/' . $room['id']) ?>" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 	</div>
 	
     </div>
-
+	</div>
 	
 	</section>
 	<!-- CONTENT -->
 	
 
-	<script src="script.js"></script>
+	<script>
+
+var modal = document.getElementById("addRoomsModal");
+
+// Get the button that opens the modal
+var addRoomsBtn = document.getElementById("addRoomsBtn");
+
+// When the user clicks the button, open the modal
+addRoomsBtn.onclick = function() {
+	modal.style.display = "block";
+}
+
+// Function to close the modal
+function closeModal() {
+	modal.style.display = "none";
+}
+
+// Close the modal if the user clicks outside of it
+window.onclick = function(event) {
+	if (event.target == modal) {
+		modal.style.display = "none";
+	}
+}
+
+</script>
 </body>
 </html>

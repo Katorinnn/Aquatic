@@ -1,31 +1,21 @@
 <?php 
-$conn = mysqli_connect('localhost','root','','rooms');
-$sql = mysqli_query($conn,"SELECT * FROM tbl_verify");
+$dbhost = 'localhost:3306';
+$dbuser = 'root';
+$dbpass = '';
+$db     = 'user_db';
+
+
+$conn  = mysqli_connect($dbhost,$dbuser,'',$db);
+$sql = mysqli_query($conn,"SELECT * FROM tbl_datepicker");
 
 if (isset($_GET['id']) && isset($_GET['Status'])){
     $id = $_GET['id'];  
     $status = $_GET['Status'];
-    mysqli_query($conn,"UPDATE tbl_verify SET Status ='$status' WHERE id = '$id'");
+    mysqli_query($conn,"UPDATE tbl_datepicker SET Status ='$status' WHERE id = '$id'");
     header('Location:bookings');
     die();
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<!-- Boxicons -->
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<!-- My CSS -->
-	<link rel="stylesheet" href="dashboard.css" >
-
-	<title>Aquatic Resort</title>
-</head>
-<body>
-
-
 	<!-- SIDEBAR -->
 	<section id="sidebar">
 		<a href="<?=('index.php') ?>" class="sidebar-menu-top">
@@ -73,14 +63,8 @@ if (isset($_GET['id']) && isset($_GET['Status'])){
 		<nav>
 			<i class='bx bx-menu' ></i>
 			<a href="#" class="nav-link"></a>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-				</div>
-			</form>
-			<input type="checkbox" id="switch-mode" hidden>
-			<label for="switch-mode" class="switch-mode"></label>
+				<input type="checkbox" id="switch-mode" hidden>
+				<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="notification">
 				<i class='bx bxs-bell' ></i>
 				<span class="num">8</span>
@@ -89,8 +73,6 @@ if (isset($_GET['id']) && isset($_GET['Status'])){
 				<img src="admin.png" class="pfp">
 			</a>
 		</nav>
-		<!-- NAVBAR -->
-
 		<!-- MAIN -->
 		<main>
 			<div class="head-title">
@@ -109,36 +91,42 @@ if (isset($_GET['id']) && isset($_GET['Status'])){
 
 			</div>
 			<div class="table-data">
-				<div class="order">
-					<div class="head">
-						<h3>BOOKINGS</h3>
-						<i class='bx bx-search' ></i>
-						<i class='bx bx-filter' ></i>
-					</div>
+					<div class="order">
+						<div class="head">
+							<h3>BOOKINGS</h3>
+					<form action="#" onsubmit="return false;">
+        				<div class="form-input">
+            				<input type="search" id="searchInput" placeholder="Search..." oninput="searchTable()">
+        				</div>
+    				</form>
+					<i class='bx bx-filter' ></i>
+					</div>		
 					<div id ="horizontal-line"></div>
-				<div class="containers">
-			<table class="table" >
-				<thead>
-					<tr>
-					<td style="display:none">#</td>
-						<th class="1">Guest Name</th>
-						<th class="1">Date</th>
-						<th class="1">Room No.</th>
-						<th class="1">Cottage No.</th>
-						<th class="1">Contact No.</th>
-						<th class="1">Status</th>
-					</tr>
-				</thead>
-			<?php 
+					
+					<div class="containers">
+				<table class="table" id="dataTable">
+			<tr>
+			<td style="display:none">#</td>
+					<th class="1">Guest Name</th>
+					<th class="1">Check in</th>
+					<th class="1">Check out</th>
+					<th class="1">Room #</th>
+					<th class="1">Cottage #</th>
+					<th class="1">Email</th>
+					<th class="1">Contact No.</th>
+					<th class="1">Status</th>
+					<?php 
 			$i = 1;
 				if(mysqli_num_rows($sql) > 0) {
 					while($row = mysqli_fetch_assoc($sql)) {?>
 					<tr>
 						<td style="display:none">#</td>
-						<td><?php echo $row["GUEST_NAME"]?></td>
-						<td><?php echo $row["DATE"]?></td>
+						<td><?php echo $row["check_in"]?></td>
+						<td><?php echo $row["check_out"]?></td>
 						<td><?php echo $row["Room_no."]?></td>
 						<td><?php echo $row["Cottage_no."]?></td>
+						<td><?php echo $row["guest_name"]?></td>
+						<td><?php echo $row["email"]?></td>
 						<td><?php echo $row["Contact_no."]?></td>
 					<td>
 					<?php 
@@ -175,5 +163,6 @@ function status_update(value,id){
     </script>
 		</main>
     </section>
+	<script src="script.js"></script>
 </body>
 </html>
